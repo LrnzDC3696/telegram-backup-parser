@@ -1,7 +1,9 @@
+__all__ = ("TextEntity", "Message", "Chat")
+
 from typing import List
 
 
-class TextEntities:
+class TextEntity:
     """A class representing text entities.
 
     Attributes
@@ -14,13 +16,13 @@ class TextEntities:
     Methods
     -------
     __init__(type_, text)
-        Initializes a new instance of TextEntities.
+        Initializes a new instance of TextEntity.
     __repr__()
-        Returns a string representation of the TextEntities instance.
+        Returns a string representation of the TextEntity instance.
     __str__()
-        Returns a string representation of the TextEntities instance.
+        Returns a string representation of the TextEntity instance.
     from_dict(data)
-        Creates a new TextEntities instance from a dictionary.
+        Creates a new TextEntity instance from a dictionary.
 
     """
 
@@ -28,7 +30,7 @@ class TextEntities:
 
     def __init__(self, type_, text):
         """
-        Initializes a new instance of the TextEntities class.
+        Initializes a new instance of the TextEntity class.
 
         Parameters
         ----------
@@ -43,24 +45,24 @@ class TextEntities:
 
     def __repr__(self):
         """
-        Returns a string representation of the TextEntities instance.
+        Returns a string representation of the TextEntity instance.
 
         Returns
         -------
         str
-            A string representation of the TextEntities instance.
+            A string representation of the TextEntity instance.
 
         """
-        return f"TextEntities(type_='{self.type_}', text='{self.text}')"
+        return f"TextEntity(type_='{self.type_}', text='{self.text}')"
 
     def __str__(self):
         """
-        Returns a string representation of the TextEntities instance.
+        Returns a string representation of the TextEntity instance.
 
         Returns
         -------
         str
-            A string representation of the TextEntities instance.
+            A string representation of the TextEntity instance.
 
         """
         return f"Type: {self.type_}, Text: {self.text}"
@@ -68,7 +70,7 @@ class TextEntities:
     @classmethod
     def from_dict(cls, data):
         """
-        Creates a new TextEntities instance from a dictionary.
+        Creates a new TextEntity instance from a dictionary.
 
         Parameters
         ----------
@@ -77,8 +79,8 @@ class TextEntities:
 
         Returns
         -------
-        TextEntities
-            A new TextEntities instance.
+        TextEntity
+            A new TextEntity instance.
 
         """
         return cls(type_=data['type'], text=data['text'])
@@ -104,7 +106,7 @@ class Message:
         The ID of the message sender.
     text : str
         The text content of the message.
-    text_entities : TextEntities
+    text_entities : TextEntity
         The text entities associated with the message.
 
     Methods
@@ -127,7 +129,7 @@ class Message:
 
     def __init__(
         self, id_, type_, date, date_unixtime, from_, from_id, text,
-        text_entities: TextEntities
+        text_entities: List[TextEntity]
     ):
         """
         Initializes a new instance of the Message class.
@@ -148,7 +150,7 @@ class Message:
             The ID of the message sender.
         text : str
             The text content of the message.
-        text_entities : TextEntities
+        text_entities : TextEntity
             The text entities associated with the message.
 
         """
@@ -209,7 +211,7 @@ class Message:
             A new Message instance.
 
         """
-        text_entities = TextEntities.from_dict(data['text_entities'][0])
+        text_entities = [TextEntity.from_dict(dte) for dte in data['text_entities']]
         return cls(
             id_=data['id'],
             type_=data['type'],
