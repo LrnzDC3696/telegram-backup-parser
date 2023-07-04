@@ -1,6 +1,10 @@
 __all__ = ("TextEntity", "Message", "Chat")
 
+import os
 from typing import List
+
+
+THUMBNAIL_SUFFIX = "_thumb.jpg"
 
 
 class TextEntity:
@@ -328,3 +332,227 @@ class Chat:
             id_=data['id'],
             messages=messages
         )
+
+
+class File:
+    """
+    A class representing a file.
+
+    Attributes
+    ----------
+    file_name : str
+        The name of the file.
+    file_thumbnail_name : str, optional
+        The name of the file's thumbnail (default is None).
+
+    Methods
+    -------
+    __init__(file_name, file_thumbnail_name=None)
+        Initializes a new instance of File.
+    from_folder(folder_path)
+        Creates a new File instance from a folder path.
+
+    """
+
+    __slots__ = ("file_name", "file_thumbnail_name")
+
+    def __init__(self, file_name, file_thumbnail_name=None):
+        """
+        Initializes a new instance of the File class.
+
+        Parameters
+        ----------
+        file_name : str
+            The name of the file.
+        file_thumbnail_name : str, optional
+            The name of the file's thumbnail (default is None).
+
+        """
+        self.file_name = file_name
+        self.file_thumnail_name = file_thumbnail_name
+
+    def __repr__(self):
+        """
+        Returns a string representation of the File instance.
+
+        Returns
+        -------
+        str
+            A string representation of the File instance.
+
+        """
+        return f"File(name={self.name}, thumbnail_name={self.thumbnail_name})"
+
+    def __str__(self):
+        """
+        Returns a string representation of the File instance.
+
+        Returns
+        -------
+        str
+            A string representation of the File instance.
+
+        """
+        return f"File {self.name}"
+
+    @classmethod
+    def from_folder(cls, folder_path):
+        """
+        Creates a new File instance from a folder path.
+
+        Parameters
+        ----------
+        folder_path : str
+            The path to the folder containing the file.
+
+        Returns
+        -------
+        list of `File`
+            A list of `File` objects.
+
+        """
+        files = []
+
+        for file_name in os.listdir(folder_path):
+            if os.path.isdir(file_name):
+                continue
+
+            file_thumbnail_path = file_name+THUMBNAIL_SUFFIX
+
+            if os.path.isfile(file_thumbnail_path):
+                file = cls(file_name, file_thumbnail_path)
+            else:
+                file = cls(file_name)
+
+            files.append(file)
+
+        return files
+
+
+class Backup:
+    """
+    A class representing a backup.
+
+    Attributes
+    ----------
+    files : List[File]
+        The list of files in the backup.
+    photos : List[File]
+        The list of photos in the backup.
+    video_files : List[File]
+        The list of video files in the backup.
+    voice_messages : List[File]
+        The list of voice messages in the backup.
+    chat : Chat
+        The chat in the backup.
+
+    Methods
+    -------
+    __init__(files, photos, video_files, voice_messages, chat)
+        Initializes a new instance of Backup.
+    __repr__()
+        Returns a string representation of the Backup instance.
+    __str__()
+        Returns a string representation of the Backup instance.
+    from_folder_path(folder_path)
+        Creates a new Backup instance from a folder path.
+
+    """
+
+    __slots__ = ("files", "photos", "video_files", "voice_messages", "chat")
+    DIRECTORIES = ("files", "photos", "video_files", "voice_messages")
+    CHAT_FILE_NAME = "result.json"
+
+    def __init__(
+        self, files: List[File], photos: List[File], video_files: List[File],
+        voice_messages: List[File], chat: Chat
+    ):
+        """
+        Initializes a new instance of the Backup class.
+
+        Parameters
+        ----------
+        files : List[File]
+            The list of files in the backup.
+        photos : List[File]
+            The list of photos in the backup.
+        video_files : List[File]
+            The list of video files in the backup.
+        voice_messages : List[File]
+            The list of voice messages in the backup.
+        chat : Chat
+            The chat in the backup.
+
+        """
+        self.files = files
+        self.photos = photos
+        self.video_files = video_files
+        self.voice_messages = voice_messages
+        self.chat = chat
+
+    def __repr__(self):
+        """
+        Returns a string representation of the Backup instance.
+
+        Returns
+        -------
+        str
+            A string representation of the Backup instance.
+
+        """
+        return (
+            f"Backup(files={self.files}, photos={self.photos}, "
+            f"video_files={self.video_files}, voice_messages={self.voice_messages}, "
+            f"chat={self.chat})"
+        )
+
+    def __str__(self):
+        """
+        Returns a string representation of the Backup instance.
+
+        Returns
+        -------
+        str
+            A string representation of the Backup instance.
+
+        """
+        return (
+            f"Backup:\n"
+            f"  files: {self.files}\n"
+            f"  photos: {self.photos}\n"
+            f"  video_files: {self.video_files}\n"
+            f"  voice_messages: {self.voice_messages}\n"
+            f"  chat: {self.chat}"
+        )
+
+    @classmethod
+    def from_folder_path(cls, folder_path):
+        """
+        Creates a new Backup instance from a folder path.
+
+        Parameters
+        ----------
+        folder_path : str
+            The path to the folder containing the backup data.
+
+        Returns
+        -------
+        Backup
+            A new Backup instance.
+
+        """
+        files = []
+        photos = []
+        video_files = []
+        voice_messages = []
+        chat = None
+
+        for directory in cls.DIRECTORIES:
+            files_in_directory = File.from_folder(os.path.join(folder_path, directory))
+
+            if directory == "chat":
+                chat = files_in_directory[0]
+            else:
+                getattr(cls, directory).extend(files_in_directory)
+
+        return cls(files, photos, video_files, voice_messages, chat)
