@@ -30,7 +30,7 @@ class TextEntity:
 
     """
 
-    __slots__ = ('type_', 'text')
+    __slots__ = ("type_", "text")
 
     def __init__(self, type_, text):
         """
@@ -87,7 +87,7 @@ class TextEntity:
             A new TextEntity instance.
 
         """
-        return cls(type_=data['type'], text=data['text'])
+        return cls(type_=data["type"], text=data["text"])
 
 
 class Message:
@@ -127,13 +127,26 @@ class Message:
     """
 
     __slots__ = (
-        'id_', 'type_', 'date', 'date_unixtime',
-        'from_', 'from_id', 'text', 'text_entities'
+        "id_",
+        "type_",
+        "date",
+        "date_unixtime",
+        "from_",
+        "from_id",
+        "text",
+        "text_entities",
     )
 
     def __init__(
-        self, id_, type_, date, date_unixtime, from_, from_id, text,
-        text_entities: List[TextEntity]
+        self,
+        id_,
+        type_,
+        date,
+        date_unixtime,
+        from_,
+        from_id,
+        text,
+        text_entities: List[TextEntity],
     ):
         """
         Initializes a new instance of the Message class.
@@ -215,16 +228,16 @@ class Message:
             A new Message instance.
 
         """
-        text_entities = [TextEntity.from_dict(dte) for dte in data['text_entities']]
+        text_entities = [TextEntity.from_dict(dte) for dte in data["text_entities"]]
         return cls(
-            id_=data['id'],
-            type_=data['type'],
-            date=data['date'],
-            date_unixtime=data['date_unixtime'],
-            from_=data['from'],
-            from_id=data['from_id'],
-            text=data['text'],
-            text_entities=text_entities
+            id_=data["id"],
+            type_=data["type"],
+            date=data["date"],
+            date_unixtime=data["date_unixtime"],
+            from_=data["from"],
+            from_id=data["from_id"],
+            text=data["text"],
+            text_entities=text_entities,
         )
 
 
@@ -256,7 +269,7 @@ class Chat:
 
     """
 
-    __slots__ = ('name', 'type_', 'id_', 'messages')
+    __slots__ = ("name", "type_", "id_", "messages")
 
     def __init__(self, name, type_, id_, messages: List[Message]):
         """
@@ -325,12 +338,9 @@ class Chat:
             A new Chat instance.
 
         """
-        messages = [Message.from_dict(msg) for msg in data['messages']]
+        messages = [Message.from_dict(msg) for msg in data["messages"]]
         return cls(
-            name=data['name'],
-            type_=data['type'],
-            id_=data['id'],
-            messages=messages
+            name=data["name"], type_=data["type"], id_=data["id"], messages=messages
         )
 
 
@@ -417,7 +427,7 @@ class File:
             if os.path.isdir(file_name):
                 continue
 
-            file_thumbnail_path = file_name+THUMBNAIL_SUFFIX
+            file_thumbnail_path = file_name + THUMBNAIL_SUFFIX
 
             if os.path.isfile(file_thumbnail_path):
                 file = cls(file_name, file_thumbnail_path)
@@ -464,8 +474,12 @@ class Backup:
     CHAT_FILE_NAME = "result.json"
 
     def __init__(
-        self, files: List[File], photos: List[File], video_files: List[File],
-        voice_messages: List[File], chat: Chat
+        self,
+        files: List[File],
+        photos: List[File],
+        video_files: List[File],
+        voice_messages: List[File],
+        chat: Chat,
     ):
         """
         Initializes a new instance of the Backup class.
