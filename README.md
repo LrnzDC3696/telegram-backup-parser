@@ -4,7 +4,10 @@ a telegram backup parser
 
 ## todo
 
-- [ ] make sub entities
-- [ ] move files
-- [ ] structure like a package
-- [ ] use poetry
+- [x] make sub entities
+- [x] move files
+- [x] structure like a package
+- [x] use poetry
+- [ ] add tests
+- [ ] think about what to do with other files
+- [ ] publish to pypi
