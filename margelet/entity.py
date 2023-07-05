@@ -1,4 +1,4 @@
-__all__ = ("TextEntity", "Message", "Chat")
+__all__ = ("TextEntity", "Message", "Chat", "Backup", "File")
 
 import os
 from typing import List
@@ -364,9 +364,9 @@ class File:
 
     """
 
-    __slots__ = ("file_name", "file_thumbnail_name")
+    __slots__ = ("name", "thumbnail_name")
 
-    def __init__(self, file_name, file_thumbnail_name=None):
+    def __init__(self, name, thumbnail_name=None):
         """
         Initializes a new instance of the File class.
 
@@ -378,8 +378,8 @@ class File:
             The name of the file's thumbnail (default is None).
 
         """
-        self.file_name = file_name
-        self.file_thumnail_name = file_thumbnail_name
+        self.name = name
+        self.thumbnail_name = thumbnail_name
 
     def __repr__(self):
         """
@@ -566,7 +566,15 @@ class Backup:
 
             if directory == "chat":
                 chat = files_in_directory[0]
+            elif directory == "files":
+                files.extend(files_in_directory)
+            elif directory == "photos":
+                photos.extend(files_in_directory)
+            elif directory == "video_files":
+                video_files.extend(files_in_directory)
+            elif directory == "voice_messages":
+                voice_messages.extend(files_in_directory)
             else:
-                getattr(cls, directory).extend(files_in_directory)
+                raise ValueError("Value not in DIRECTORIES")
 
         return cls(files, photos, video_files, voice_messages, chat)
