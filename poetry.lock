@@ -25,6 +25,14 @@ python-versions = "*"
 beautifulsoup4 = "*"
 
 [[package]]
+name = "chardet"
+version = "5.1.0"
+description = "Universal encoding detector for Python 3"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "lxml"
 version = "4.9.2"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
@@ -39,6 +47,20 @@ htmlsoup = ["beautifulsoup4"]
 source = ["Cython (>=0.29.7)"]
 
 [[package]]
+name = "scarletio"
+version = "1.0.56"
+description = "Asynchronous blackmagic & Witchcraft"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+chardet = ">=2.0"
+
+[package.extras]
+cpythonspeedups = ["cchardet (>=2.0)"]
+
+[[package]]
 name = "soupsieve"
 version = "2.4.1"
 description = "A modern CSS selector implementation for Beautiful Soup."
@@ -46,13 +68,27 @@ category = "main"
 optional = false
 python-versions = ">=3.7"
 
+[[package]]
+name = "vampytest"
+version = "0.0.10"
+description = "A vampy test framework"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+scarletio = "*"
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "7c3e21b68552ed1d09a0c73857ca4c7515b29105be3bf217d544304cd9ad27f9"
+content-hash = "d71257844f8520531189224bb472b5657cc2cd83648a75eb6318c9dcbe922237"
 
 [metadata.files]
 beautifulsoup4 = []
 bs4 = []
+chardet = []
 lxml = []
+scarletio = []
 soupsieve = []
+vampytest = []

@@ -9,6 +9,7 @@ license = "MIT"
 python = "^3.10"
 bs4 = "^0.0.1"
 lxml = "^4.9.2"
+vampytest = "^0.0.10"
 
 [tool.poetry.dev-dependencies]
 
