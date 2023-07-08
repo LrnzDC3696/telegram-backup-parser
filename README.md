@@ -8,6 +8,8 @@ a telegram backup parser
 - [x] move files
 - [x] structure like a package
 - [x] use poetry
+- [x] check json
+- [ ] add missing json properties
 - [ ] add tests
 - [ ] add dummy data for tests
 - [ ] add checker if I am not missing any directories

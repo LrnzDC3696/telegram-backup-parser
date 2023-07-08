@@ -5,10 +5,44 @@ import vampytest
 BACKUP_PATH = os.path.join("backups", "ChatExport_2023-06-28")
 RESULT_FILE_PATH = os.path.join(BACKUP_PATH, "result.json")
 
-# Can't think of a better name, please suggest
+ACTION_FIELDS_TO_REMOVE = ["actor", "actor_id", "action", "text", "text_entities"]
+OPTIONAL_ACTION_FIELDS_TO_REMOVE = [
+    "emoticon",
+    "type",
+    "date",
+    "date_unixtime",
+    "id",
+    "duration_seconds",
+    "discard_reason",
+    "message_id",
+]
+
+MSG_FIELDS_TO_REMOVE = [
+    "id",
+    "type",
+    "date",
+    "date_unixtime",
+    "from",
+    "from_id",
+    "text",
+]
+
+OPTIONAL_MSG_FIELDS_TO_REMOVE = [
+    "photo",
+    "width",
+    "height",
+    "reply_to_message_id",
+    "edited",
+    "edited_unixtime",
+    "file",
+    "mime_type",
+    "duration_seconds",
+    "media_type",
+    "thumbnail",
+]
 
 
-def filter_empty(iterable):
+def filter_empty(iterable):  # Can't think of a better name, please suggest
     return [n for n in iterable if n]
 
 
@@ -27,79 +61,23 @@ def test_dummy_data_result():
     # Testing Messages
     for message in messages:
         if message.get("actor"):
-            message.pop("actor")
-            message.pop("actor_id")
-            message.pop("action")
-            message.pop("text")
-            message.pop("text_entities")
+            for field in ACTION_FIELDS_TO_REMOVE:
+                message.pop(field)
 
-            if message.get("emoticon"):
-                message.pop("emoticon")
-
-            if message.get("type"):
-                message.pop("type")
-
-            if message.get("date"):
-                message.pop("date")
-
-            if message.get("date_unixtime"):
-                message.pop("date_unixtime")
-
-            if message.get("id"):
-                message.pop("id")
-
-            if message.get("duration_seconds"):
-                message.pop("duration_seconds")
-
-            if message.get("discard_reason"):
-                message.pop("discard_reason")
-
-            if message.get("message_id"):
-                message.pop("message_id")
+            for field in OPTIONAL_ACTION_FIELDS_TO_REMOVE:
+                if message.get(field):
+                    message.pop(field)
 
             continue
 
-        message.pop("id")
-        message.pop("type")
-        message.pop("date")
-        message.pop("date_unixtime")
-        message.pop("from")
-        message.pop("from_id")
-        message.pop("text")
-
         text_entities = message.pop("text_entities")
 
-        # new optional stuff
-        if message.get("photo"):
-            message.pop("photo")
-            message.pop("width")
-            message.pop("height")
+        for field in MSG_FIELDS_TO_REMOVE:
+            message.pop(field)
 
-        if message.get("reply_to_message_id"):
-            message.pop("reply_to_message_id")
-
-        if message.get("edited"):
-            message.pop("edited")
-            message.pop("edited_unixtime")
-
-        if message.get("file"):
-            message.pop("file")
-            message.pop("mime_type")
-
-            if message.get("duration_seconds"):
-                message.pop("duration_seconds")
-
-            if message.get("media_type"):
-                message.pop("media_type")
-
-            if message.get("thumbnail"):
-                message.pop("thumbnail")
-
-            if message.get("width"):
-                message.pop("width")
-
-            if message.get("height"):
-                message.pop("height")
+        for field in OPTIONAL_MSG_FIELDS_TO_REMOVE:
+            if message.get(field):
+                message.pop(field)
 
         for text_entity in text_entities:
             text_entity.pop("type")
