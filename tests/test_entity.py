@@ -6,7 +6,7 @@ example_test_entity_type = "plain"
 example_test_entity_text = "plain"
 example_text_entity = {
     "type": example_test_entity_type,
-    "text": example_test_entity_text
+    "text": example_test_entity_text,
 }
 
 

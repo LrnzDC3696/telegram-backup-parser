@@ -124,8 +124,7 @@ class Message:
             media_call_status = _media_call.find("div", class_="status")
 
         # For share location
-        _media_live_location = _media_wrap.find(
-            "a", class_="media_live_location")
+        _media_live_location = _media_wrap.find("a", class_="media_live_location")
         if _media_live_location is None:
             media_live_location_map_url = None
             media_live_location_title = None
@@ -133,8 +132,7 @@ class Message:
 
         else:
             media_live_location_map_url = _media_live_location["href"]
-            media_live_location_title = _media_live_location.find(
-                "div", class_="title")
+            media_live_location_title = _media_live_location.find("div", class_="title")
             media_live_location_status = _media_live_location.find(
                 "div", class_="status"
             )
@@ -162,10 +160,8 @@ class Message:
             round_video_message_thumb_path = _media_video.find("img", class_="thumb")[
                 "src"
             ]
-            round_video_message_title = _media_video.find(
-                "div", class_="title")
-            round_video_message_status = _media_video.find(
-                "div", class_="status")
+            round_video_message_title = _media_video.find("div", class_="title")
+            round_video_message_status = _media_video.find("div", class_="status")
 
         # For video files
         _video_file_wrap = _media_wrap.find("a", class_="video_file_wrap")
@@ -179,12 +175,10 @@ class Message:
             video_file_thumb_path = _video_file_wrap.find("img", class_="video_file")[
                 "src"
             ]
-            video_file_duration = _video_file_wrap.find(
-                "div", class_="video_duration")
+            video_file_duration = _video_file_wrap.find("div", class_="video_duration")
 
         # For voice messages
-        _media_voice_message = _media_wrap.find(
-            "a", class_="media_voice_message")
+        _media_voice_message = _media_wrap.find("a", class_="media_voice_message")
         if _media_voice_message is None:
             media_voice_message_path = None
             media_voice_message_title = None
@@ -192,10 +186,8 @@ class Message:
 
         else:
             media_voice_message_path = _media_voice_message["href"]
-            media_voice_message_title = _media_voice_message.find(
-                "div", "title")
-            media_voice_message_status = _media_voice_message.find(
-                "div", "status")
+            media_voice_message_title = _media_voice_message.find("div", "title")
+            media_voice_message_status = _media_voice_message.find("div", "status")
 
         return cls(
             id_,
