@@ -5,8 +5,8 @@ import vampytest
 BACKUP_PATH = os.path.join("backups", "ChatExport_2023-06-28")
 RESULT_FILE_PATH = os.path.join(BACKUP_PATH, "result.json")
 
-ACTION_FIELDS_TO_REMOVE = ["actor", "actor_id", "action", "text", "text_entities"]
-OPTIONAL_ACTION_FIELDS_TO_REMOVE = [
+ACTION_FIELDS_TO_REMOVE = ("actor", "actor_id", "action", "text", "text_entities")
+OPTIONAL_ACTION_FIELDS_TO_REMOVE = (
     "emoticon",
     "type",
     "date",
@@ -15,9 +15,9 @@ OPTIONAL_ACTION_FIELDS_TO_REMOVE = [
     "duration_seconds",
     "discard_reason",
     "message_id",
-]
+)
 
-MSG_FIELDS_TO_REMOVE = [
+MSG_FIELDS_TO_REMOVE = (
     "id",
     "type",
     "date",
@@ -25,9 +25,9 @@ MSG_FIELDS_TO_REMOVE = [
     "from",
     "from_id",
     "text",
-]
+)
 
-OPTIONAL_MSG_FIELDS_TO_REMOVE = [
+OPTIONAL_MSG_FIELDS_TO_REMOVE = (
     "photo",
     "width",
     "height",
@@ -39,7 +39,22 @@ OPTIONAL_MSG_FIELDS_TO_REMOVE = [
     "duration_seconds",
     "media_type",
     "thumbnail",
-]
+)
+
+
+def yeet_fields(obj, fields):
+    for field in fields:
+        obj.pop(field)
+
+    return obj
+
+
+def yeet_optional_fields(obj, fields):
+    for field in fields:
+        if obj.get(field):
+            obj.pop(field)
+
+    return obj
 
 
 def filter_empty(iterable):  # Can't think of a better name, please suggest
@@ -60,30 +75,22 @@ def test_dummy_data_result():
 
     # Testing Messages
     for message in messages:
-        if message.get("actor"):
-            for field in ACTION_FIELDS_TO_REMOVE:
-                message.pop(field)
+        if message.get("type") == "service":
+            message = yeet_fields(message, ACTION_FIELDS_TO_REMOVE)
+            message = yeet_optional_fields(message, OPTIONAL_ACTION_FIELDS_TO_REMOVE)
 
-            for field in OPTIONAL_ACTION_FIELDS_TO_REMOVE:
-                if message.get(field):
-                    message.pop(field)
-
+            vampytest.assert_eq(message, {})
             continue
 
+        message = yeet_fields(message, MSG_FIELDS_TO_REMOVE)
+        message = yeet_optional_fields(message, OPTIONAL_MSG_FIELDS_TO_REMOVE)
+
         text_entities = message.pop("text_entities")
-
-        for field in MSG_FIELDS_TO_REMOVE:
-            message.pop(field)
-
-        for field in OPTIONAL_MSG_FIELDS_TO_REMOVE:
-            if message.get(field):
-                message.pop(field)
-
         for text_entity in text_entities:
             text_entity.pop("type")
             text_entity.pop("text")
 
-            vampytest.assert_eq(text_entity, {})
+        vampytest.assert_eq(text_entity, {})
         vampytest.assert_eq(message, {})
 
     vampytest.assert_eq(filter_empty(text_entities), [])
