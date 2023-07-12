@@ -72,6 +72,7 @@ def test_dummy_data_result():
     messages = json_data.pop("messages")
 
     vampytest.assert_eq(json_data, {})
+    types_of_message = set()
 
     # Testing Messages
     for message in messages:
@@ -95,3 +96,6 @@ def test_dummy_data_result():
 
     vampytest.assert_eq(filter_empty(text_entities), [])
     vampytest.assert_eq(filter_empty(messages), [])
+    print("===="*5)
+    print(f"message types: {types_of_message}")
+    print("===="*5)

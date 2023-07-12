@@ -110,7 +110,7 @@ class Message:
         The ID of the message sender.
     text : str
         The text content of the message.
-    text_entities : TextEntity
+    text_entities : List[TextEntity]
         The text entities associated with the message.
 
     Methods
