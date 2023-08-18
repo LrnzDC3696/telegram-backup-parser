@@ -127,26 +127,79 @@ class Message:
     """
 
     __slots__ = (
-        "id_",
-        "type_",
-        "date",
-        "date_unixtime",
-        "from_",
-        "from_id",
-        "text",
+        # action fields
+        "actor",
+        "actor_id",
+        "action",
         "text_entities",
+        "emoticon",
+        "date_unixtime",
+
+        # optional action fields
+        "discard_reason",
+        "message_id",
+
+        # message fields
+        "date_unixtime",
+        "from",
+        "from_id",
+
+        # optional message fields
+        "photo",
+        "width",
+        "height",
+        "reply_to_message_id",
+        "edited",
+        "edited_unixtime",
+        "file",
+        "mime_type",
+        "media_type",
+        "thumbnail",
+
+        # both fields:
+        "duration_seconds",
+        "type",
+        "date",
+        "id",
+        "text",
     )
 
     def __init__(
         self,
-        id_,
-        type_,
-        date,
-        date_unixtime,
+        # action fields
+        actor,
+        actor_id,
+        action,
+        text_entities,
+        emoticon,
+
+        # optional action fields
+        discard_reason,
+        message_id,
+
+        # message fields
         from_,
         from_id,
+
+        # optional message fields
+        photo,
+        width,
+        height,
+        reply_to_message_id,
+        edited,
+        edited_unixtime,
+        file,
+        mime_type,
+        media_type,
+        thumbnail,
+
+        # both fields:
+        date_unixtime,
+        duration_seconds,
+        type_,
+        date,
+        id,
         text,
-        text_entities: List[TextEntity],
     ):
         """
         Initializes a new instance of the Message class.

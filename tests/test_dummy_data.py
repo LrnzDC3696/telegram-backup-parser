@@ -76,6 +76,7 @@ def test_dummy_data_result():
 
     # Testing Messages
     for message in messages:
+        types_of_message.add(message["type"])
         if message.get("type") == "service":
             message = yeet_fields(message, ACTION_FIELDS_TO_REMOVE)
             message = yeet_optional_fields(message, OPTIONAL_ACTION_FIELDS_TO_REMOVE)
